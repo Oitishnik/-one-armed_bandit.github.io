@@ -1,0 +1,47 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #222;
+  color: white;
+  text-align: center;
+  margin: 0;
+  padding: 20px;
+}
+
+#slot {
+  display: grid;
+  grid-template-columns: repeat(3, 120px);
+  grid-template-rows: repeat(3, 120px);
+  gap: 5px;
+  justify-content: center;
+  margin: 20px auto;
+}
+
+.cell {
+  width: 120px;
+  height: 120px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 2px solid #555;
+  border-radius: 10px;
+}
+
+button {
+  margin: 10px;
+  padding: 10px 20px;
+  border: none;
+  background: #ffcc00;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button:hover {
+  background: #ffdf33;
+}
+
+.result {
+  font-size: 1.2em;
+  margin-top: 15px;
+}
