@@ -1,47 +1,77 @@
 body {
-  font-family: Arial, sans-serif;
-  background: #222;
+  background: radial-gradient(circle at center, #222 0%, #000 100%);
   color: white;
+  font-family: "Segoe UI", sans-serif;
   text-align: center;
-  margin: 0;
-  padding: 20px;
+  padding-top: 50px;
 }
 
 #slot {
   display: grid;
-  grid-template-columns: repeat(3, 120px);
-  grid-template-rows: repeat(3, 120px);
-  gap: 5px;
+  grid-template-columns: repeat(3, 100px);
+  grid-template-rows: repeat(3, 100px);
+  gap: 10px;
   justify-content: center;
-  margin: 20px auto;
+  margin: 30px auto;
 }
 
 .cell {
-  width: 120px;
-  height: 120px;
-  background-size: contain;
-  background-repeat: no-repeat;
+  width: 100px;
+  height: 100px;
+  background-size: cover;
   background-position: center;
-  background-color: rgba(255, 255, 255, 0.1);
-  border: 2px solid #555;
-  border-radius: 10px;
+  border-radius: 12px;
+  border: 2px solid #666;
+  box-shadow: 0 0 10px #000;
+  transition: transform 0.2s ease;
+}
+
+.cell.spin {
+  animation: spin 0.5s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotateX(0deg); }
+  50% { transform: rotateX(180deg); }
+  100% { transform: rotateX(360deg); }
 }
 
 button {
-  margin: 10px;
-  padding: 10px 20px;
+  background: linear-gradient(90deg, #ff005a, #ff8800);
+  color: white;
+  font-size: 1.1rem;
   border: none;
-  background: #ffcc00;
   border-radius: 10px;
+  padding: 10px 25px;
+  margin: 10px;
   cursor: pointer;
-  font-weight: bold;
+  transition: 0.3s;
 }
 
 button:hover {
-  background: #ffdf33;
+  transform: scale(1.05);
+  background: linear-gradient(90deg, #ff8800, #ff005a);
 }
 
 .result {
-  font-size: 1.2em;
-  margin-top: 15px;
+  font-size: 1.3rem;
+  margin-top: 20px;
+  color: #ffea00;
 }
+
+@media (max-width: 600px) {
+    #game {
+      width: 95vw;
+      padding: 10px;
+    }
+    .cell {
+      border-radius: 8px;
+    }
+    button {
+      width: 90%;
+      font-size: 0.9rem;
+    }
+    h1 {
+      font-size: 1.3rem;
+    }
+  }
