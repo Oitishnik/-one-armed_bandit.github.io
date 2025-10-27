@@ -14,7 +14,7 @@ const game = document.createElement("div");
 game.id = "game";
 
 const title = document.createElement("h1");
-title.textContent = "Гра «Однорукий бандит»";
+title.textContent = "Гра «Однорукий бандит» 🎰";
 
 const name = document.createElement("p");
 name.textContent = `Учасник: ${playerName}`;
@@ -42,6 +42,12 @@ document.body.appendChild(game);
 let roundNum = 1;
 let win = false;
 
+for (let i = 0; i < 9; i++) {
+  const cell = document.createElement("div");
+  cell.className = "cell";
+  slot.appendChild(cell);
+}
+
 function getRandomImages() {
   const grid = [];
   for (let i = 0; i < 3; i++) {
@@ -49,38 +55,52 @@ function getRandomImages() {
     arr.sort(() => Math.random() - 0.5);
     grid.push(arr.slice(0, 3));
   }
+  for (let col = 0; col < 3; col++) {
+    let used = new Set();
+    for (let row = 0; row < 3; row++) {
+      while (used.has(grid[col][row])) {
+        grid[col][row] = images[Math.floor(Math.random() * images.length)];
+      }
+      used.add(grid[col][row]);
+    }
+  }
   return grid;
 }
 
 function playRound() {
   const grid = getRandomImages();
-  slot.innerHTML = "";
+  const cells = document.querySelectorAll(".cell");
+  
+  cells.forEach(c => c.classList.add("spin"));
+  result.textContent = "🎲 Крутиться барабан";
 
-  for (let row = 0; row < 3; row++) {
-    for (let col = 0; col < 3; col++) {
-      const cell = document.createElement("div");
-      cell.className = "cell";
-      cell.style.backgroundImage = `url('${grid[row][col]}')`;
-      slot.appendChild(cell);
+  setTimeout(() => {
+    cells.forEach((cell, i) => {
+      const col = i % 3;
+      const row = Math.floor(i / 3);
+      cell.classList.remove("spin");
+      cell.style.backgroundImage = `url('${grid[col][row]}')`;
+    });
+
+    const middleRow = [grid[0][1], grid[1][1], grid[2][1]];
+    const names = middleRow.map(p => p.split("/").pop());
+    
+    if (names[0] === names[1] && names[1] === names[2]) {
+      result.textContent = `🎉 Вітаємо, ${playerName}! Ви виграли!`;
+      win = true;
+      endGame();
+      return;
     }
-  } 
 
-  const middleRow = [grid[0][1], grid[1][1], grid[2][1]];
-  const names = middleRow.map(p => p.split("/").pop());
-  if (names[0] === names[1] && names[1] === names[2]) {
-    result.textContent = `Вітаємо, ${playerName}, Ви перемогли!`;
-    win = true;
-    endGame();
-    return;
-  }
-
-  if (roundNum < 3) {
-    roundNum++;
-    round.textContent = `Ітерація: ${roundNum} з 3`;
-  } else {
-    result.textContent = `На жаль, ${playerName} програв, спробуйте ще раз!`;
-    endGame();
-  }
+    if (roundNum < 3) {
+      roundNum++;
+      round.textContent = `Ітерація: ${roundNum} з 3`;
+      result.textContent = "😐 Немає збігу, спробуйте ще";
+    } else {
+      result.textContent = `😢 ${playerName}, на жаль Ви програли`;
+      endGame();
+    }
+  }, 2000);
 }
 
 function endGame() {
